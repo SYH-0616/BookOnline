@@ -4,10 +4,10 @@ $(function() {
 	 */
 	$("#submit").hover(
 		function() {
-			$("#submit").attr("src", "/goods/images/login2.jpg");
+			$("#submit").attr("src", "/BookOnline/images/login2.jpg");
 		},
 		function() {
-			$("#submit").attr("src", "/goods/images/login1.jpg");
+			$("#submit").attr("src", "/BookOnline/images/login1.jpg");
 		}
 	);
 	
@@ -64,9 +64,9 @@ function validateLoginname() {
 		$("#loginnameError").css("display", "");
 		$("#loginnameError").text("用户名不能为空！");
 		bool = false;
-	} else if(value.length < 3 || value.length > 20) {//长度校验
+	} else if(value.length < 6 || value.length > 20) {//长度校验
 		$("#loginnameError").css("display", "");
-		$("#loginnameError").text("用户名长度必须在3 ~ 20之间！");
+		$("#loginnameError").text("用户名长度必须在6 ~ 20之间！");
 		bool = false;
 	}
 	return bool;
@@ -112,8 +112,8 @@ function validateVerifyCode() {
 			async: false,
 			type: "POST",
 			dataType: "json",
-			data: {method: "validateVerifyCode", verifyCode: value},
-			url: "/goods/UserServlet",
+			data: {method: "ajaxValidateVerifyCode", verifyCode: value},
+			url: "/BookOnline/UserServlet",
 			success: function(flag) {
 				if(!flag) {
 					$("#verifyCodeError").css("display", "");
