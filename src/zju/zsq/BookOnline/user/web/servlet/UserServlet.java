@@ -27,6 +27,36 @@ import zju.zsq.servlet.BaseServlet;
 public class UserServlet extends BaseServlet {
 	private UserService userService = new UserService();
 	
+	public String updatePassword(HttpServletRequest req, HttpServletResponse resp)
+	throws ServletException, IOException {
+		/**
+		 * 1.封装表单数据到user中
+		 * 2.从session中获取uid
+		 * 3.使用uid和表单中的oldPass跟newPass
+		 * 		3.1如果出现异常，保存异常信息到request中，转发到pwd.jsp
+		 * 4.保存成功信息到request中
+		 * 5.转发到msg.jsp中
+		 */
+		
+		User formUser = CommonUtils.toBean(req.getParameterMap(), User.class);
+		User user = (User)req.getSession().getAttribute("SessionUser");
+		if(user == null){
+			req.setAttribute("msg", "您还没登陆！");
+			return "f:/jsps/user/login.jsp";
+		}
+		try {
+			userService.updatePassword(user.getUid(), formUser.getLoginpass() ,formUser.getNewpass());
+			req.setAttribute("msg", "修改密码成功！");
+			req.setAttribute("code", "success");
+			return "f:/jsps/msg.jsp";
+		} catch (UserException e) {
+			req.setAttribute("msg" ,e.getMessage() );
+			req.setAttribute("user", formUser);
+			return "f:/jsps/user/login.jsp";
+		}
+	}
+	
+	
 	/**
 	 * 登陆功能
 	 * @param req
@@ -72,18 +102,16 @@ public class UserServlet extends BaseServlet {
 		}else{
 			if(!user.isStatus()){
 				req.setAttribute("msg", "您还没激活！");
-				req.setAttribute("user", userForm);
+				req.setAttribute("SessionUser", user);
 				return "f:/jsps/user/login.jsp";
 			}else{
-				req.getSession().setAttribute("user", user);
+				req.getSession().setAttribute("UserSession", user);
 				String loginname = user.getLoginname();
 				loginname = URLEncoder.encode(loginname,"UTF-8");
 				Cookie cookie = new Cookie("loginname",loginname);
 				cookie.setMaxAge(60*60*24*7);
 				resp.addCookie(cookie);
 				return "r:/index.jsp";
-				
-				
 			}
 		}
 			
@@ -254,7 +282,7 @@ public class UserServlet extends BaseServlet {
 		String vcode = (String)session.getAttribute("vCode");
 		if(verifyCode==null||verifyCode.trim().isEmpty()){
 			errors.put("verifyCode", "验证码不能为空！");
-		}else if(!vcode.equals(verifyCode)){
+		}else if(!vcode.equalsIgnoreCase(verifyCode)){
 			errors.put("verifyCode", "验证码错误！");
 		}
 		

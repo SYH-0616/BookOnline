@@ -19,6 +19,18 @@ import zju.zsq.jdbc.TxQueryRunner;
 public class UserDao {
 	private QueryRunner qr = new TxQueryRunner();
 	
+	//按照uid跟password查询
+	public boolean findByUidAndPassword(String uid,String loginpass) throws SQLException{
+		String sql = "select count(1) from t_user where uid = ? and loginpass = ?";
+		Number number = (Number) qr.query(sql, new ScalarHandler(),uid,loginpass);
+		return number.intValue()>0;
+	}
+	
+	public void updatePassword(String uid,String loginpass) throws SQLException{
+		String sql = "update t_user set loginpass = ? where uid = ?";
+		qr.update(sql,uid,loginpass);
+	}
+	
 	//按用户名跟密码查询
 	public User findByLoginnameAndLoginpass(String loginname , String loginpass) throws SQLException{
 		String sql = "select * from t_user where loginname = ? and loginpass = ?";

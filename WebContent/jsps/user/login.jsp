@@ -23,10 +23,10 @@
 <script type="text/javascript">
 	$(function(){
 		//获取cookie中的用户名
-		var loginname = window.decodeURL("$(cookie.loginname.value)");
+		var loginname = window.decodeURL("${cookie.loginname.value}");
 		//获取回显的用户名
-		if("${requestScope.user.loginname}"){
-			loginname = "${requestScope.user.loginname}";
+		if("${user.loginname}"){
+			loginname = "${user.loginname}";//EL表达式先执行，所以要先加""
 		}
 		$("#loginname".val(loginname));
 	});
@@ -75,7 +75,7 @@
                       <td>
                         <input class="input yzm" type="text" name="verifyCode" id="verifyCode" value="${user.verifyCode}"/>
                         <img id="vCode" src="<c:url value='/VerifyCodeServlet'/>"/>
-                        <a id="verifyCode">换张图</a>
+                        <a id="imgVerifyCode">换张图</a>
                       </td>
                     </tr>
                     <tr>

@@ -54,8 +54,8 @@ function validateLoginpass() {
 			async: false,
 			type: "POST",
 			dataType: "json",
-			data: {method: "validateLoginpass", loginpass: value},
-			url: "/goods/UserServlet",
+			data: {method: "ajaxValidateLoginpass", loginpass: value},
+			url: "/BookOnline/UserServlet",
 			success: function(flag) {
 				if(!flag) {
 					$("#loginpassError").css("display", "");
@@ -77,9 +77,9 @@ function validateNewpass() {
 		$("#newpassError").css("display", "");
 		$("#newpassError").text("新密码不能为空！");
 		bool = false;
-	} else if(value.length < 3 || value.length > 20) {//长度校验
+	} else if(value.length < 6 || value.length > 20) {//长度校验
 		$("#newpassError").css("display", "");
-		$("#newpassError").text("新密码长度必须在3 ~ 20之间！");
+		$("#newpassError").text("新密码长度必须在6 ~ 20之间！");
 		bool = false;
 	}
 	return bool;
@@ -119,22 +119,6 @@ function validateVerifyCode() {
 		$("#verifyCodeError").css("display", "");
 		$("#verifyCodeError").text("错误的验证码！");
 		bool = false;
-	} else {//验证码是否正确
-		$.ajax({
-			cache: false,
-			async: false,
-			type: "POST",
-			dataType: "json",
-			data: {method: "validateVerifyCode", verifyCode: value},
-			url: "/goods/UserServlet",
-			success: function(flag) {
-				if(!flag) {
-					$("#verifyCodeError").css("display", "");
-					$("#verifyCodeError").text("错误的验证码！");
-					bool = false;					
-				}
-			}
-		});
-	}
+	} 
 	return bool;
 }

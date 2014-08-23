@@ -22,7 +22,7 @@ public class User {
 	private String verifyCode;//验证码
 	
 	//修改密码表单
-	private String newloginpass;//新密码
+	private String newpass;//新密码
 	
 	
 	public String getReloginpass() {
@@ -38,11 +38,12 @@ public class User {
 	public void setVerifyCode(String verifyCode) {
 		this.verifyCode = verifyCode;
 	}
-	public String getNewloginpass() {
-		return newloginpass;
+	
+	public String getNewpass() {
+		return newpass;
 	}
-	public void setNewloginpass(String newloginpass) {
-		this.newloginpass = newloginpass;
+	public void setNewpass(String newpass) {
+		this.newpass = newpass;
 	}
 	public String getUid() {
 		return uid;
@@ -84,6 +85,10 @@ public class User {
 	public String toString() {
 		return "User [uid=" + uid + ", loginname=" + loginname + ", loginpass="
 				+ loginpass + ", email=" + email + ", status=" + status
-				+ ", activationCode=" + activationCode + "]";
+				+ ", activationCode=" + activationCode + ", reloginpass="
+				+ reloginpass + ", verifyCode=" + verifyCode + ", newpass="
+				+ newpass + "]";
 	}
+
+	
 }

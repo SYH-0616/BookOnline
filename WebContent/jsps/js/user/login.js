@@ -40,7 +40,7 @@ $(function() {
 	$(".input").blur(function() {
 		var inputName = $(this).attr("name");
 		invokeValidateFunction(inputName);
-	})
+	});
 });
 
 /*
@@ -83,9 +83,9 @@ function validateLoginpass() {
 		$("#loginpassError").css("display", "");
 		$("#loginpassError").text("密码不能为空！");
 		bool = false;
-	} else if(value.length < 3 || value.length > 20) {//长度校验
+	} else if(value.length < 6 || value.length > 20) {//长度校验
 		$("#loginpassError").css("display", "");
-		$("#loginpassError").text("密码长度必须在3 ~ 20之间！");
+		$("#loginpassError").text("密码长度必须在6 ~ 20之间！");
 		bool = false;
 	}
 	return bool;

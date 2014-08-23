@@ -24,6 +24,25 @@ public class UserService {
 	private UserDao userDao = new UserDao();
 	
 	
+	//校验老密码
+	public void updatePassword(String uid,String oldPass,String newPass) throws UserException{
+		
+		try {
+			/**
+			 * 1.校验老密码
+			 */
+			boolean bool = userDao.findByUidAndPassword(uid,oldPass);
+			/**
+			 * 2.如果老密码错误
+			 */
+			if(!bool){
+				throw new UserException("老密码错误！");
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 	public User Login(User user){
 		String loginname = user.getLoginname();
 		String loginpass = user.getLoginpass();
