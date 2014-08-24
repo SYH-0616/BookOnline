@@ -16,9 +16,13 @@
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
 	<link rel="stylesheet" type="text/css" href="<c:url value='/css/css.css'/>">
+	
 	<link rel="stylesheet" type="text/css" href="<c:url value='/jsps/css/user/pwd.css'/>">
-	<script type="text/javascript" src="<c:url value='/jquery/jquery-1.5.1.js'/>"></script>
-	<script src="<c:url value='/js/common.js'/>"></script>
+	<script type="text/javascript" src="<c:url value='/js/common.js'/>"></script>
+	<script type="text/javascript" src="<c:url value='/jquery/jquery-1.5.1.js'/>">
+	<script type="text/javascript" src="<c:url value='/js/common.js'/>"></script>
+	
+	
   </head>
   
   <body>
@@ -27,11 +31,11 @@
     </div>
 
 	<div class="div1">
-		<form action="<c:url value='/jsps/msg.jsp'/>" method="post" target="_top">
-			<input type="hidden" name="method" value=""/>
+		<form action="<c:url value='/UserServlet'/>" method="post" target="_top" id="pwdFrom">
+			<input type="hidden" name="method" value="updatePassword"/>
 		<table>
 			<tr>
-				<td><label class="error">${msg }</label></td>
+				<td><label class="error">${msg}</label></td>
 				<td colspan="2">&nbsp;</td>
 			</tr>
 			<tr>
@@ -52,7 +56,7 @@
 			<tr>
 				<td align="right"></td>
 				<td>
-				  <img id="vCode" src="" border="1"/>
+				  <img id="vCode" src="<c:url value='/VerifyCodeServlet'/>" border="1"/>
 		    	  <a href="javascript:_change();">看不清，换一张</a>
 				</td>
 			</tr>

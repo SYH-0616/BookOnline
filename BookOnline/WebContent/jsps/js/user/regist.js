@@ -29,7 +29,7 @@ $(function() {
 	 * 4.输入框失去焦点，显示
 	 */
 	$(".inputClass").blur(function(){
-		var id = $(this).attr("id")+"Error";//得到当前输入框id
+		var id = $(this).attr("id");//得到当前输入框id
 		var funName="validate"+id.substring(0,1).toUpperCase()+id.substring(1)+"()";//得到检验方法名。
 		eval(funName);//eval里面当成相应代码来执行,相当于调用了对应的
 	});
@@ -37,21 +37,21 @@ $(function() {
 	 *5.表单提交验证
 	 *
 	 */
-	$("#registForm").submit(function(){
-		var bool = true;
-		if(!validateLoginnameError()){
+	$("#tableForm").submit(function(){
+		var bool = true;//表示校验通过
+		if(!validateLoginname()){
 			bool = false;
 		}
-		if(!validateLoginpassError()){
+		if(!validateLoginpass()){
 			bool = false;
 		}
-		if(!validateReloginpassError()){
+		if(!validateReloginpass()){
 			bool = false;
 		}
-		if(!validateEmailError()){
+		if(!validateEmail()){
 			bool = false;
 		}
-		if(!validateVerifycodeError()){
+		if(!validateVerifyCode()){
 			bool = false;
 		}
 		return bool;
@@ -62,7 +62,7 @@ $(function() {
 /*
  * 登录名校验方法
  */
-function validateLoginnameError(){
+function validateLoginname(){
 	
 	var id = "loginname";
 	var value = $("#"+id).val();//获取输入框内容
@@ -76,11 +76,11 @@ function validateLoginnameError(){
 		return false;
 	}
 	//2.长度校验
-	if(value.length < 3||value.length > 20){
+	if(value.length < 6||value.length > 20){
 		//获取对应label
 		//添加错误信息
 		//显示错误信息
-		$("#"+id+"Error").text("用户名必须在3~20之间");
+		$("#"+id+"Error").text("用户名必须在6~20字符之间");
 		showError($("#"+id+"Error"));
 		return false;
 	}
@@ -104,11 +104,11 @@ function validateLoginnameError(){
 	});
 	
 	return true;
-}
+} 
 /*
  * 登录密码校验
  */
-function validateLoginpassError(){
+function validateLoginpass(){
 	var id = "loginpass";
 	var value = $("#"+id).val();//获取输入框内容
 	//1.非空校验
@@ -135,7 +135,7 @@ function validateLoginpassError(){
 /*
  * 再次输入密码校验
  */
-function validateReloginpassError(){
+function validateReloginpass(){
 	var id = "reloginpass";
 	var value = $("#"+id).val();//获取输入框内容
 	//1.非空校验
@@ -160,7 +160,7 @@ function validateReloginpassError(){
  * Email校验
  */
 
-function validateEmailError(){
+function validateEmail(){
 	var id = "email";
 	var value = $("#"+id).val();//获取输入框内容
 	//1.非空校验
@@ -200,7 +200,7 @@ function validateEmailError(){
 /*
  * 验证码校验
  */
-function validateVerifyCodeError(){
+function validateVerifyCode(){
 	var id = "verifyCode";
 	var value = $("#"+id).val();//获取输入框内容
 	//1.非空校验

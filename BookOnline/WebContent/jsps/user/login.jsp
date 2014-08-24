@@ -14,22 +14,21 @@
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
 	<meta http-equiv="content-type" content="text/html;charset=utf-8">
-	<!--
-	<link rel="stylesheet" type="text/css" href="styles.css">
-	-->
+	<script type="text/javascript" src="<c:url value='/js/common.js'/>"></script>
 	<link rel="stylesheet" type="text/css" href="<c:url value='/jsps/css/user/login.css'/>">
 	<script type="text/javascript" src="<c:url value='/jquery/jquery-1.5.1.js'/>"></script>
-	<script type="text/javascript" src="<c:url value='/jsps/js/user/login.js'/>"></script>
-	<script src="<c:url value='/js/common.js'/>"></script>
-
+	<script type="text/javascript" src="<c:url value='/jsps/js/user/login.js'/>">
+	
+<!-- Map<String,Cookie> -->
 <script type="text/javascript">
-	$(function() {/*Map<String(Cookie名称),Cookie(Cookie本身)>*/
-		// 获取cookie中的用户名
-		var loginname = window.decodeURI("${cookie.loginname.value}");
-		if("${requestScope.user.loginname}") {
-			loginname = "${requestScope.user.loginname}";
+	$(function(){
+		//获取cookie中的用户名
+		var loginname = window.decodeURL("${cookie.loginname.value}");
+		//获取回显的用户名
+		if("${user.loginname}"){
+			loginname = "${user.loginname}";//EL表达式先执行，所以要先加""
 		}
-		$("#loginname").val(loginname);
+		$("#loginname".val(loginname));
 	});
 </script>
   </head>
@@ -53,11 +52,11 @@
                   <table>
                     <tr>
                       <td width="50"></td>
-                      <td><label class="error" id="msg">${msg }</label></td>
+                      <td><label class="error" id="msg"></label>${msg}</td>
                     </tr>
                     <tr>
                       <td width="50">用户名</td>
-                      <td><input class="input" type="text" name="loginname" id="loginname"/></td>
+                      <td><input class="input" type="text" name="loginname" id="loginname" /></td>
                     </tr>
                     <tr>
                       <td height="20">&nbsp;</td>
@@ -65,7 +64,7 @@
                     </tr>
                     <tr>
                       <td>密　码</td>
-                      <td><input class="input" type="password" name="loginpass" id="loginpass" value="${user.loginpass }"/></td>
+                      <td><input class="input" type="password" name="loginpass" id="loginpass" value="${user.loginpass}" /></td>
                     </tr>
                     <tr>
                       <td height="20">&nbsp;</td>
@@ -74,9 +73,9 @@
                     <tr>
                       <td>验证码</td>
                       <td>
-                        <input class="input yzm" type="text" name="verifyCode" id="verifyCode" value="${user.verifyCode }"/>
+                        <input class="input yzm" type="text"  name="verifyCode" id="verifyCode" value="${user.verifyCode}"/>
                         <img id="vCode" src="<c:url value='/VerifyCodeServlet'/>"/>
-                        <a href="javascript:_hyz()">换张图</a>
+                        <a id="imgVerifyCode" href="javascript:_change()" >换张图</a> 
                       </td>
                     </tr>
                     <tr>

@@ -2,7 +2,7 @@ $(function() {
 	/*
 	 * 1. 给注册按钮添加submit()事件，完成表单校验
 	 */
-	$("#submit").submit(function(){
+	$("#pwdFrom").submit(function(){
 		$("#msg").text("");
 		var bool = true;
 		$(".input").each(function() {
@@ -48,23 +48,8 @@ function validateLoginpass() {
 		$("#loginpassError").css("display", "");
 		$("#loginpassError").text("密码长度必须在3 ~ 20之间！");
 		bool = false;
-	} else {// 验证原错误是否正确
-		$.ajax({
-			cache: false,
-			async: false,
-			type: "POST",
-			dataType: "json",
-			data: {method: "validateLoginpass", loginpass: value},
-			url: "/goods/UserServlet",
-			success: function(flag) {
-				if(!flag) {
-					$("#loginpassError").css("display", "");
-					$("#loginpassError").text("原密码错误！");
-					bool = false;				
-				}
-			}
-		});
-	}
+	} 
+	
 	return bool;
 }
 
@@ -77,9 +62,9 @@ function validateNewpass() {
 		$("#newpassError").css("display", "");
 		$("#newpassError").text("新密码不能为空！");
 		bool = false;
-	} else if(value.length < 3 || value.length > 20) {//长度校验
+	} else if(value.length < 6 || value.length > 20) {//长度校验
 		$("#newpassError").css("display", "");
-		$("#newpassError").text("新密码长度必须在3 ~ 20之间！");
+		$("#newpassError").text("新密码长度必须在6 ~ 20之间！");
 		bool = false;
 	}
 	return bool;
@@ -119,22 +104,6 @@ function validateVerifyCode() {
 		$("#verifyCodeError").css("display", "");
 		$("#verifyCodeError").text("错误的验证码！");
 		bool = false;
-	} else {//验证码是否正确
-		$.ajax({
-			cache: false,
-			async: false,
-			type: "POST",
-			dataType: "json",
-			data: {method: "validateVerifyCode", verifyCode: value},
-			url: "/goods/UserServlet",
-			success: function(flag) {
-				if(!flag) {
-					$("#verifyCodeError").css("display", "");
-					$("#verifyCodeError").text("错误的验证码！");
-					bool = false;					
-				}
-			}
-		});
-	}
+	} 
 	return bool;
 }

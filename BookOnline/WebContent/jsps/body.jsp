@@ -25,16 +25,11 @@ a {text-decoration: none;}
   </head>
   
   <body>
-    <h1>欢迎进入朱适卿网上书城系统</h1>
-    <a href="http://www.baidu.com/" target="_top">
-      <img src="http://localhost:8080/BookOnline/images/itcast_link.gif" border="0" style="border:1px #DCD8D7 solid;"/>
+    <h1>欢迎进入网上书城系统</h1>
+    <a href="http://zhushiqing.github.io/" target="_top">
+      <img src="http://localhost:8080/BookOnline/images/something.gif" border="0" style="border:1px #DCD8D7 solid;"/>
     </a>
     <br/>
-    <a href="http://www.baidu.com/" target="_top">
-      <img src="http://localhost:8080/BookOnline/images/mhzxxls.jpg" border="0"/>
-    </a>
-    <a href="http://www.baidu.com/" target="_top">
-      <img src="http://localhost:8080/BookOnline/images/csdn.jpg" border="0"/>
-    </a>
+
   </body>
 </html>

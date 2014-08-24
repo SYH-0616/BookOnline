@@ -14,7 +14,7 @@ $(function() {
 	/*
 	 * 2. 给注册按钮添加submit()事件，完成表单校验
 	 */
-	$("#submit").submit(function(){
+	$("#loginForm").submit(function(){
 		$("#msg").text("");
 		var bool = true;
 		$(".input").each(function() {
@@ -40,7 +40,7 @@ $(function() {
 	$(".input").blur(function() {
 		var inputName = $(this).attr("name");
 		invokeValidateFunction(inputName);
-	})
+	});
 });
 
 /*
@@ -102,10 +102,12 @@ function validateVerifyCode() {
 		$("#verifyCodeError").css("display", "");
 		$("#verifyCodeError").text("验证码不能为空！");
 		bool = false;
+		alret("kong");
 	} else if(value.length != 4) {//长度不为4就是错误的
 		$("#verifyCodeError").css("display", "");
 		$("#verifyCodeError").text("错误的验证码！");
 		bool = false;
+		alret("changdu");
 	} else {//验证码是否正确
 		$.ajax({
 			cache: false,
@@ -115,22 +117,14 @@ function validateVerifyCode() {
 			data: {method: "ajaxValidateVerifyCode", verifyCode: value},
 			url: "/BookOnline/UserServlet",
 			success: function(flag) {
-				alret("xxx");
 				if(!flag) {
 					$("#verifyCodeError").css("display", "");
 					$("#verifyCodeError").text("错误的验证码！");
 					bool = false;					
 				}
+				alret(bool);
 			}
 		});
 	}
 	return bool;
-}
-function _hyz() {
-	/*
-	 * 1. 获取<img>元素
-	 * 2. 重新设置它的src
-	 * 3. 使用毫秒来添加参数
-	 */
-	$("#vCode").attr("src", "/BookOnline/VerifyCodeServlet?a=" + new Date().getTime());
 }
