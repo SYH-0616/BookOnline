@@ -24,6 +24,8 @@ public class UserService {
 	private UserDao userDao = new UserDao();
 	
 	
+	
+	
 	//–£—È¿œ√‹¬Î
 	public void updatePassword(String uid,String oldPass,String newPass) throws UserException{
 		

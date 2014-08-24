@@ -27,6 +27,16 @@ import zju.zsq.servlet.BaseServlet;
 public class UserServlet extends BaseServlet {
 	private UserService userService = new UserService();
 	
+	
+	public String quit(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+				
+		req.getSession().invalidate();
+		return "r:/jsps/user/login.jsp";
+		
+	}
+	
+	
 	public String updatePassword(HttpServletRequest req, HttpServletResponse resp)
 	throws ServletException, IOException {
 		/**
