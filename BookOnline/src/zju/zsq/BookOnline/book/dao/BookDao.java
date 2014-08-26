@@ -26,6 +26,12 @@ public class BookDao {
 		list.add(new Expression("cid","",cid));
 		return findByCriteria(list, pc);
 	}
+	//按照书名随意查询
+	public PageBean<Book> findByBname(String bname, int pc) throws SQLException{
+		List<Expression> list = new ArrayList<Expression>();
+		list.add(new Expression("bname","like","%"+bname+"%"));
+		return findByCriteria(list, pc);
+	}
 	/**
 	 * 通用的查询方法
 	 * @param exprList
