@@ -14,72 +14,96 @@ import zju.zsq.BookOnline.pager.PageBean;
 import zju.zsq.BookOnline.pager.PageConstants;
 import zju.zsq.jdbc.TxQueryRunner;
 
-
 public class BookDao {
-	
+
 	private QueryRunner qr = new TxQueryRunner();
-	
-	
-	
-	public PageBean<Book> findByCategory(String cid, int pc) throws SQLException{
+
+	public PageBean<Book> findByCategory(String cid, int pc)
+			throws SQLException {
 		List<Expression> list = new ArrayList<Expression>();
-		list.add(new Expression("cid","",cid));
+		list.add(new Expression("cid", "", cid));
 		return findByCriteria(list, pc);
 	}
-	//按照书名随意查询
-	public PageBean<Book> findByBname(String bname, int pc) throws SQLException{
+
+	// 按照书名随意查询
+	public PageBean<Book> findByBname(String author, int pc) throws SQLException {
 		List<Expression> list = new ArrayList<Expression>();
-		list.add(new Expression("bname","like","%"+bname+"%"));
+		list.add(new Expression("author", "like", "%" + author + "%"));
 		return findByCriteria(list, pc);
 	}
+	//按照作者查询
+	public PageBean<Book> findByAuthor(String bname, int pc)
+			throws SQLException {
+		List<Expression> list = new ArrayList<Expression>();
+		list.add(new Expression("bname", "like", "%" + bname + "%"));
+		return findByCriteria(list, pc);
+	}
+	//按出版社查
+	public PageBean<Book> findByPress(String press, int pc)
+			throws SQLException {
+		List<Expression> list = new ArrayList<Expression>();
+		list.add(new Expression("bname", "like", "%" + press + "%"));
+		return findByCriteria(list, pc);
+	}
+		
+	//多条件组合查询
+	public PageBean<Book> findByCombination(String combination, int pc)
+			throws SQLException {
+		List<Expression> list = new ArrayList<Expression>();
+		list.add(new Expression("combination", "like", "%" + combination + "%"));
+		return findByCriteria(list, pc);
+	}
+
 	/**
 	 * 通用的查询方法
+	 * 
 	 * @param exprList
 	 * @param pc
 	 * @return
-	 * @throws SQLException 
+	 * @throws SQLException
 	 */
-	private PageBean<Book> findByCriteria(List<Expression> exprList , int pc ) throws SQLException{
+	private PageBean<Book> findByCriteria(List<Expression> exprList, int pc)
+			throws SQLException {
 		/**
-		 * 1.得到ps
-		 * 2.得到tr
-		 * 3.得到beanlist
-		 * 4.创建pagebean
+		 * 1.得到ps 2.得到tr 3.得到beanlist 4.创建pagebean
 		 */
-		int ps = PageConstants.BOOK_PAGE_SIZE;//每页记录数
-		//生成where子句
+		int ps = PageConstants.BOOK_PAGE_SIZE;// 每页记录数
+		// 生成where子句
 		StringBuilder whereSql = new StringBuilder(" where 1 =1 ");
-		List<Object> params = new ArrayList<Object>();//对应问号的值
-		for(Expression expr : exprList){
-			whereSql.append(" and ").append(expr.getName()).append(" ").append(
-					expr.getOperator()).append(" ");
-			if(expr.getOperator().equals("is null")){
+		List<Object> params = new ArrayList<Object>();// 对应问号的值
+		for (Expression expr : exprList) {
+			whereSql.append(" and ").append(expr.getName()).append(" ")
+					.append(expr.getOperator()).append(" ");
+			if (expr.getOperator().equals("is null")) {
 				whereSql.append("?");
 				params.add(expr.getValue());//
 			}
 		}
-		
-		//得到总记录数
-		String sql = "select count(*) from t_book"+whereSql;
-		
-		Number number = (Number)qr.query(sql, new ScalarHandler(),params.toArray());
+
+		// 得到总记录数
+		String sql = "select count(*) from t_book" + whereSql;
+
+		Number number = (Number) qr.query(sql, new ScalarHandler(),
+				params.toArray());
 		int tr = number.intValue();
-		
-		//得到当前页记录
-		String sql1 = "select * from t_book "+whereSql + " order by orderBy limit ? , ?";
-		
-		params.add((pc-1)*ps);//第一个问号 当前记录的下标
-		params.add(ps);//一共查询多少行
-		
-		List<Book> beanList = qr.query(sql1, new BeanListHandler<Book>(Book.class),params.toArray());
-		
+
+		// 得到当前页记录
+		String sql1 = "select * from t_book " + whereSql
+				+ " order by orderBy limit ? , ?";
+
+		params.add((pc - 1) * ps);// 第一个问号 当前记录的下标
+		params.add(ps);// 一共查询多少行
+
+		List<Book> beanList = qr.query(sql1, new BeanListHandler<Book>(
+				Book.class), params.toArray());
+
 		PageBean<Book> pb = new PageBean<Book>();
 		pb.setPc(pc);
 		pb.setPs(ps);
 		pb.setTr(tr);
 		pb.setBeanList(beanList);
-		
+
 		return pb;
-		
+
 	}
 }
