@@ -37,7 +37,7 @@ $(function(){
 	
 	//给所有条目的复选框添加click事件
 	$(":checkbox[name=checkboxBtn]").click(function(){
-		var all = $(":checkbox[name=checkboxBtn]").legth;//所有条目的个数
+		var all = $(":checkbox[name=checkboxBtn]").length;//所有条目的个数
 		var select = $(":checkbox[name=checkboxBtn][checked=true]").length;
 		if(all == select){
 			$("#selectAll").attr("checked",true);//勾选复选框
@@ -51,9 +51,56 @@ $(function(){
 		}
 		showTotal();
 	});
+	//给减号添加click事件
+	$(".jian").click(function(){
+		//获取cartItemId
+		var id = $(this).attr("id").substring(0,32);
+		//获取输入框的数量
+		var quantity = $("#"+id+"Quantity").val();
+		//判断当前数量是不是为1,如果为1，则弹出提示
+		if(quantity==1){
+			if(confirm("您是否要删除该条目?")){
+				location="/BookOnline/CartItemServlet?method=batchDelete&cartItemIds=" + id;
+			}
+		}else{
+			sendUpdateQuantity(id,Number(quantity)-1);
+		}
+		
+	});
+	//给加号添加click事件
+	$(".jia").click(function(){
+		//获取cartItemId
+		var id = $(this).attr("id").substring(0,32);
+		//获取输入框的数量
+		var quantity = $("#"+id+"Quantity").val();
+		//判断当前数量是不是为1,如果为1，则弹出提示
+	
+		sendUpdateQuantity(id,Number(quantity)+1);
+		
+	});
 	
 	
 });
+
+//请求服务器，修改数量。
+function sendUpdateQuantity(id, quantity) {
+	$.ajax({
+		async:false,
+		cache:false,
+		url:"/BookOnline/CartItemServlet",
+		data:{method:"updateQuantity",cartItemId:id,quantity:quantity},
+		type:"POST",
+		dataType:"json",
+		success:function(result) {
+			//1. 修改数量
+			$("#" + id + "Quantity").val(result.quantity);
+			//2. 修改小计
+			$("#" + id + "Subtotal").text(result.subtotal);
+			//3. 重新计算总计
+			showTotal();
+		}
+	});
+}
 
 //计算总计
 function showTotal(){
@@ -73,7 +120,7 @@ function showTotal(){
 	
 	});
 	//把总计显示在总计元素内
-	$("#total").text(total);
+	$("#total").text(round(total,2));//把total保留两位小数
 	
 }
 //统一设置所有条目的复选按钮
@@ -92,6 +139,31 @@ function setJieSuan(bool){
 		});
 	}
 	
+}
+//批量删除方法
+function batchDelete(){
+	var cartItemArray = new Array();
+	$(":checkbox[name=checkboxBtn][checked=true]").each(function(){
+		cartItemArray.push($(this).val());
+	});
+	location="/BookOnline/CartItemServlet?method=batchDelete&cartItemIds="+cartItemArray;
+}
+/*
+ * 结算
+ */
+function jiesuan() {
+	// 1. 获取所有被选择的条目的id，放到数组中
+	var cartItemIdArray = new Array();
+	$(":checkbox[name=checkboxBtn][checked=true]").each(function() {
+		cartItemIdArray.push($(this).val());//把复选框的值添加到数组中
+	});	
+	
+	// 2. 把数组的值toString()，然后赋给表单的cartItemIds这个hidden
+	$("#cartItemIds").val(cartItemIdArray.toString());
+	// 把总计的值，也保存到表单中
+	$("#hiddenTotal").val($("#total").text());
+	// 3. 提交这个表单
+	$("#jieSuanForm").submit();
 }
 
 </script>
@@ -113,8 +185,6 @@ function setJieSuan(bool){
 
 	</c:when>
 	<c:otherwise>
-		<br/>
-		<br/>
 		<table width="95%" align="center" cellpadding="0" cellspacing="0">
 	<tr align="center" bgcolor="#efeae5">
 		<td align="left" width="50px">
@@ -148,7 +218,7 @@ function setJieSuan(bool){
 			<span class="price_n">&yen;<span class="subTotal" id="${cartItem.cartItemId}Subtotal">${cartItem.subtotal }</span></span>
 		</td>
 		<td>
-			<a href="<c:url value='/jsps/cart/list.jsp'/>">删除</a>
+			<a href="<c:url value='/CartItemServlet?method=batchDelete&cartItemIds=${cartItem.cartItemId }'/>">删除</a>
 		</td>
 	</tr>
 
@@ -159,21 +229,9 @@ function setJieSuan(bool){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-	
 	<tr>
 		<td colspan="4" class="tdBatchDelete">
-			<a href="javascript:alert('批量删除成功');">批量删除</a>
+			<a href="javascript:batchDelete();">批量删除</a>
 		</td>
 		<td colspan="3" align="right" class="tdTotal">
 			<span>总计：</span><span class="price_t">&yen;<span id="total"></span></span>
@@ -181,23 +239,20 @@ function setJieSuan(bool){
 	</tr>
 	<tr>
 		<td colspan="7" align="right">
-			<a href="<c:url value='/jsps/cart/showitem.jsp'/>" id="jiesuan" class="jiesuan"></a>
+			<a href="javascript:jiesuan();"  id="jiesuan" class="jiesuan"></a>
 		</td>
 	</tr>
 </table>
 	
-	</c:otherwise>
-</c:choose>
-
-	
 
 
-
-	<form id="form1" action="<c:url value='/jsps/cart/showitem.jsp'/>" method="post">
+	<form id="jieSuanForm" action="<c:url value='/CartItemServlet'/>" method="post">
 		<input type="hidden" name="cartItemIds" id="cartItemIds"/>
+		<input type="hidden" name="total" id="hiddenTotal"/>
 		<input type="hidden" name="method" value="loadCartItems"/>
 	</form>
-
+	</c:otherwise>
+</c:choose>
 
   </body>
 </html>

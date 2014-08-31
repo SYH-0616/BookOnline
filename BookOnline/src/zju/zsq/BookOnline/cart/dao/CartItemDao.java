@@ -17,7 +17,46 @@ import zju.zsq.jdbc.TxQueryRunner;
 
 public class CartItemDao {
 	private QueryRunner qr = new TxQueryRunner();
-
+	
+	//加载多个单子
+	public List<CartItem> loadCartItems(String cartItemIds) throws SQLException{
+		Object[] params = cartItemIds.split(",");
+		String whereSql = toWhereSql(params.length);
+		String sql = "select * from t_cartitem c, t_book b where b.bid=c.bid and "+whereSql;
+		return toCartItemList(qr.query(sql, new MapListHandler(),params));
+	}
+	
+	
+	//按id查询
+	public CartItem findByCartItemId(String cartItemId) throws SQLException{
+		String sql = "select * from t_cartitem c,t_book b where c.bid = b.bid and c.cartItemId=?";
+		
+		Map<String,Object> map = qr.query(sql,new MapHandler(),cartItemId);
+		return toCartItem(map);
+	}
+	
+	//用来生成where子句
+	private String toWhereSql(int len){
+		StringBuilder sb = new StringBuilder("cartItemId in (");
+		for (int i = 0; i < len; i++) {
+			sb.append("?");
+			if(i<len-1){
+				sb.append(",");
+			}
+		}
+		sb.append(")");
+		return sb.toString();
+	}
+	
+	public void batchDelete(String cartItemIds) throws SQLException{
+		Object[] params = cartItemIds.split(",");
+		String whereSql = toWhereSql(params.length);
+		String sql = "delete from t_cartitem where "+whereSql;
+		
+		qr.update(sql, params);
+		
+	}
+	
 	public CartItem findByUidAndBid(String uid, String bid) {
 		String sql = "select * from t_cartitem where uid = ? and bid = ?";
 		try {
@@ -33,6 +72,7 @@ public class CartItemDao {
 			throws SQLException {
 		String sql = "update t_cartitem set quantity = ? where cartItemId = ?";
 		qr.update(sql, quantity, cartItemId);
+		
 	}
 
 	public void addCartItem(CartItem cartItem) throws SQLException {
