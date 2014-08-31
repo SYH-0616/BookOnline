@@ -3,15 +3,20 @@ package zju.zsq.BookOnline.order.dao;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.apache.commons.dbutils.handlers.MapListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 
+import zju.zsq.BookOnline.book.domain.Book;
 import zju.zsq.BookOnline.order.domain.Order;
+import zju.zsq.BookOnline.order.domain.OrderItem;
 import zju.zsq.BookOnline.pager.Expression;
 import zju.zsq.BookOnline.pager.PageBean;
 import zju.zsq.BookOnline.pager.PageConstants;
+import zju.zsq.commons.CommonUtils;
 import zju.zsq.jdbc.TxQueryRunner;
 
 public class OrderDao {
@@ -94,9 +99,37 @@ public class OrderDao {
 	/**
 	 * 为指定的order加载orderitem
 	 * @param order
+	 * @throws SQLException 
 	 */
-	private void loadOrderItem(Order order) {
+	private void loadOrderItem(Order order) throws SQLException {
+		/**
+		 * 给出sql语句
+		 */
+		String sql = "select * from t_orderitem where oid = ?";
+		List<Map<String,Object>> mapList = qr.query(sql, new MapListHandler(),order.getOid());
 		
+		List<OrderItem> orderItemList = toOrderItemList(mapList);
 		
+		order.setOrderItemList(orderItemList);
+		
+	}
+	//把多个map转化成多个orderItem
+	private List<OrderItem> toOrderItemList(List<Map<String, Object>> mapList) {
+		List<OrderItem> orderItemList = new ArrayList<OrderItem>();
+		for(Map map : mapList){
+			OrderItem orderItem = toOrderItem(map);
+			orderItemList.add(orderItem);
+		}
+		return orderItemList;
+	}
+
+	//把一个map转换成一个orderItem
+	private OrderItem toOrderItem(Map map) {
+		OrderItem orderItem = CommonUtils.toBean(map, OrderItem.class);
+		Book book = CommonUtils.toBean(map, Book.class);
+		
+		orderItem.setBook(book);
+		
+		return orderItem;
 	}
 }

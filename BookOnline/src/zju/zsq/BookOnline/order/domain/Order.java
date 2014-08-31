@@ -1,5 +1,7 @@
 package zju.zsq.BookOnline.order.domain;
 
+import java.util.List;
+
 import zju.zsq.BookOnline.user.domain.User;
 
 public class Order {
@@ -9,6 +11,14 @@ public class Order {
 	private int status;//订单状态 1.未付款 2.已付款，未发货 3.已发货，未确认收货 4.确认收货了，交易成功 5.已取消 只有未付款才能取消
 	private String address;
 	private User owner;
+	private List<OrderItem> orderItemList;
+	
+	public List<OrderItem> getOrderItemList() {
+		return orderItemList;
+	}
+	public void setOrderItemList(List<OrderItem> orderItemList) {
+		this.orderItemList = orderItemList;
+	}
 	public String getOid() {
 		return oid;
 	}

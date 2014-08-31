@@ -54,7 +54,7 @@ public class OrderServlet extends BaseServlet {
 	 * @throws IOException
 	 * @throws SQLException 
 	 */
-	public String myOrder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+	public String myOrders(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 		//1.得到pc，如果页面传递，则使用页面的，如果页面没有传递，pc=1
 		//2.得到url
 		//3.获取查询条件，获取uid
