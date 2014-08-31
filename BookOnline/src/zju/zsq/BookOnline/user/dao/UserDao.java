@@ -12,14 +12,14 @@ import zju.zsq.jdbc.TxQueryRunner;
 
 
 /**
- * ÓÃ»§Ä£¿é³Ö¾Ã²ã
+ * ç”¨æˆ·æ¨¡å—æŒä¹…å±‚
  * @author zhushiqing
  *
  */
 public class UserDao {
 	private QueryRunner qr = new TxQueryRunner();
 	
-	//°´ÕÕuid¸úpassword²éÑ¯
+	//æŒ‰ç…§uidè·ŸpasswordæŸ¥è¯¢
 	public boolean findByUidAndPassword(String uid,String loginpass) throws SQLException{
 		String sql = "select count(1) from t_user where uid = ? and loginpass = ?";
 		Number number = (Number) qr.query(sql, new ScalarHandler(),uid,loginpass);
@@ -28,16 +28,16 @@ public class UserDao {
 	
 	public void updatePassword(String uid,String loginpass) throws SQLException{
 		String sql = "update t_user set loginpass = ? where uid = ?";
-		qr.update(sql,loginpass,uid);
+		qr.update(sql,uid,loginpass);
 	}
 	
-	//°´ÓÃ»§Ãû¸úÃÜÂë²éÑ¯
+	//æŒ‰ç”¨æˆ·åè·Ÿå¯†ç æŸ¥è¯¢
 	public User findByLoginnameAndLoginpass(String loginname , String loginpass) throws SQLException{
 		String sql = "select * from t_user where loginname = ? and loginpass = ?";
 		return qr.query(sql, new BeanHandler<User>(User.class),loginname,loginpass);
 	}
 	/**
-	 * Ğ£ÑéÓÃ»§ÃûÊÇ·ñ×¢²á
+	 * æ ¡éªŒç”¨æˆ·åæ˜¯å¦æ³¨å†Œ
 	 * @param loginname
 	 * @return
 	 * @throws SQLException 
@@ -46,10 +46,10 @@ public class UserDao {
 		String sql = "select count(1) from t_user where loginname = ?";
 		Number number = (Number)qr.query(sql, new ScalarHandler(),loginname);
 		
-		return number.intValue()==0;//Èç¹ûÒ»¸öÓÃ»§Ãû¶¼²»´æÔÚ£¬´ú±íÃ»×¢²á¹ı
+		return number.intValue()==0;//å¦‚æœä¸€ä¸ªç”¨æˆ·åéƒ½ä¸å­˜åœ¨ï¼Œä»£è¡¨æ²¡æ³¨å†Œè¿‡
 	}
 	/**
-	 * Ğ£ÑéEmailÊÇ·ñ×¢²á
+	 * æ ¡éªŒEmailæ˜¯å¦æ³¨å†Œ
 	 * @param email
 	 * @return
 	 * @throws SQLException
@@ -58,7 +58,7 @@ public class UserDao {
 		String sql = "select count(1) from t_user where loginname = ?";
 		Number number = (Number)qr.query(sql, new ScalarHandler(),email);
 		
-		return number.intValue()==0;//Èç¹ûÒ»¸öEmail¶¼²»´æÔÚ£¬´ú±íÃ»×¢²á¹ı
+		return number.intValue()==0;//å¦‚æœä¸€ä¸ªEmailéƒ½ä¸å­˜åœ¨ï¼Œä»£è¡¨æ²¡æ³¨å†Œè¿‡
 	}
 	
 	public void add(User user) throws SQLException{
@@ -67,7 +67,7 @@ public class UserDao {
 		qr.update(sql,params);
 	}
 	
-	//¸ù¾İ¼¤»îÂë²éÑ¯ÓÃ»§
+	//æ ¹æ®æ¿€æ´»ç æŸ¥è¯¢ç”¨æˆ·
 	public User findByCode(String code){
 		String sql = "select * from t_user where activationCode = ?";
 		try {
@@ -77,10 +77,10 @@ public class UserDao {
 		}
 	}
 	
-	//ĞŞ¸ÄÓÃ»§·½·¨
-	public void updateStatus(String activationCode,boolean status) throws SQLException{
-		String sql = "update t_user set status = ? where  activationCode = ?";
-		qr.update(sql, status, activationCode);
+	//ä¿®æ”¹ç”¨æˆ·æ–¹æ³•
+	public void updateStatus(String uid,boolean status) throws SQLException{
+		String sql = "update t_user set status = ? where uid = ?";
+		qr.update(sql, status,uid);
 	}
 	
 }

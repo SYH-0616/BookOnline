@@ -2,20 +2,20 @@ package zju.zsq.BookOnline.pager;
 
 import java.util.List;
 /**
- * ·ÖÒ³bean»áÔÚ¸÷²ãÖ®¼ä´«µİ
+ * åˆ†é¡µbeanä¼šåœ¨å„å±‚ä¹‹é—´ä¼ é€’
  * @author zhushiqing
  *
  * @param <T>
  */
 public class PageBean<T> {
 
-	private int pc;//µ±Ç°Ò³Âë
-	private int tr;//×Ü¼ÇÂ¼Êı
-	private int ps;//Ã¿Ò³¼ÇÂ¼Êı
-	private String url;//ÇëÇóÂ·¾¶Óë²ÎÊı £º/BookServlet?method=findxxx&cid=2&banme=2
+	private int pc;//å½“å‰é¡µç  pc=pageCurr
+	private int tr;//æ€»è®°å½•æ•°
+	private int ps;//æ¯é¡µè®°å½•æ•°
+	private String url;//è¯·æ±‚å‚æ•°ä¸è·¯å¾„/BookServlet?method=findxxx&cid=2&banme=2
 	private List<T> beanList;
 	
-	//¼ÆËã×ÜÒ³Êı
+	//è®¡ç®—æ€»é¡µæ•°
 	public int getTp(){
 		int tp = tr / ps;
 		return tr % ps == 0 ? tp : tp + 1;

@@ -16,7 +16,7 @@ import zju.zsq.mail.Mail;
 import zju.zsq.mail.MailUtils;
 
 /**
- * ÓÃ»§Ä£¿éÒµÎñ²ã
+ * ç”¨æˆ·æ¨¡å—ä¸šåŠ¡å±‚
  * @author zhushiqing
  *
  */
@@ -24,23 +24,19 @@ public class UserService {
 	private UserDao userDao = new UserDao();
 	
 	
-	
-	
-	//Ğ£ÑéÀÏÃÜÂë
+	//æ ¡éªŒè€å¯†ç 
 	public void updatePassword(String uid,String oldPass,String newPass) throws UserException{
 		
 		try {
 			/**
-			 * 1.Ğ£ÑéÀÏÃÜÂë
+			 * 1.æ ¡éªŒè€å¯†ç 
 			 */
 			boolean bool = userDao.findByUidAndPassword(uid,oldPass);
 			/**
-			 * 2.Èç¹ûÀÏÃÜÂë´íÎó
+			 * 2.å¦‚æœè€å¯†ç é”™è¯¯
 			 */
 			if(!bool){
-				throw new UserException("ÀÏÃÜÂë´íÎó£¡");
-			}else{
-				userDao.updatePassword(uid, newPass);
+				throw new UserException("è€å¯†ç é”™è¯¯ï¼");
 			}
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -60,21 +56,21 @@ public class UserService {
 	}
 	
 	/**
-	 * ¼¤»î¹¦ÄÜ
+	 * æ¿€æ´»åŠŸèƒ½
 	 * @param code
 	 * @throws UserException 
 	 */
 	public void activation (String code) throws SQLException, UserException{
 		User user = userDao.findByCode(code);
 		if(user == null)
-			throw new UserException("ÎŞĞ§µÄ¼¤»îÂë");
+			throw new UserException("æ— æ•ˆçš„æ¿€æ´»ç ");
 		if(user.isStatus())
-			throw new UserException("ÄúÒÑ¾­¼¤»î¹ıÁË£¬Çë²»ÒªÔÙ´Î¼¤»î£¡");
+			throw new UserException("æ‚¨å·²ç»æ¿€æ´»è¿‡äº†ï¼Œè¯·ä¸è¦å†æ¬¡æ¿€æ´»ï¼");
 		userDao.updateStatus(code, true);
 	}
 	
 	/**
-	 * ÓÃ»§ÃûĞ£Ñé
+	 * ç”¨æˆ·åæ ¡éªŒ
 	 * @param loginname
 	 * @return
 	 */
@@ -86,7 +82,7 @@ public class UserService {
 		}
 	}
 	/**
-	 * emailĞ£Ñé
+	 * emailæ ¡éªŒ
 	 * @param email
 	 * @return
 	 */
@@ -100,13 +96,13 @@ public class UserService {
 	
 	public void regist(User user){
 		/**
-		 * 1.²¹ÆëÊı¾İ
+		 * 1.è¡¥é½æ•°æ®
 		 */
 		user.setUid(CommonUtils.uuid());
 		user.setStatus(false);
 		user.setActivationCode(CommonUtils.uuid()+CommonUtils.uuid());
 		/**
-		 * 2.ÏòÊı¾İ¿â²åÈë
+		 * 2.å‘æ•°æ®åº“æ’å…¥
 		 */
 		
 		
@@ -116,24 +112,24 @@ public class UserService {
 			throw new RuntimeException(e);
 		}
 		/**
-		 * 3.·¢ÓÊ¼şÍ¨ÖªÓÃ»§
-		 * 3.1µÈÓÚÓÊÏä
+		 * 3.å‘é‚®ä»¶é€šçŸ¥ç”¨æˆ·
+		 * 3.1ç­‰äºé‚®ç®±
 		 */
 		
-		//°Ñemail_template.properties¼ÓÔØµ½popÀïÃæÀ´
+		//æŠŠemail_template.propertiesåŠ è½½åˆ°popé‡Œé¢æ¥
 		Properties pop = new Properties();
 		try {
 			pop.load(this.getClass().getClassLoader().getResourceAsStream("email_template.properties"));
 		} catch (IOException e1) {
 			throw new RuntimeException(e1);
 		}	
-		String host = pop.getProperty("host");//·şÎñÆ÷Ö÷»úÃû
-		String name = pop.getProperty("username"); //ÓÃ»§Ãû
-		String pass = pop.getProperty("password"); //ÃÜÂë
+		String host = pop.getProperty("host");//æœåŠ¡å™¨ä¸»æœºå
+		String name = pop.getProperty("username"); //ç”¨æˆ·å
+		String pass = pop.getProperty("password"); //å¯†ç 
 		Session session = MailUtils.createSession(host, name, pass);
 		
 		/**
-		 * 3.2´´½¨Mail¶ÔÏó
+		 * 3.2åˆ›å»ºMailå¯¹è±¡
 		 */
 		
 	
@@ -142,11 +138,11 @@ public class UserService {
 		String from = pop.getProperty("from");
 		String to = user.getEmail();
 		String subject = pop.getProperty("subject");
-		//MessageFormat.format ·½·¨»á°ÑµÚÒ»¸ö²ÎÊıÖĞµÄ{0} Ìæ»»³ÉµÚ¶ş¸ö²ÎÊı 
+		//MessageFormat.format æ–¹æ³•ä¼šæŠŠç¬¬ä¸€ä¸ªå‚æ•°ä¸­çš„{0} æ›¿æ¢æˆç¬¬äºŒä¸ªå‚æ•° 
 		String content = MessageFormat.format(pop.getProperty("content"), user.getActivationCode());
 		Mail mail = new Mail(from, to, subject, content);
 		/**
-		 * 3.3 ·¢ËÍÓÊ¼ş
+		 * 3.3 å‘é€é‚®ä»¶
 		 */
 		try {
 			MailUtils.send(session, mail);

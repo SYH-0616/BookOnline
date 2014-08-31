@@ -1,28 +1,28 @@
 package zju.zsq.BookOnline.user.domain;
 
 /**
- * ÓÃ»§Ä£¿éÊµÌåÀà
+ * ç”¨æˆ·æ¨¡å—å®ä½“ç±»
  * @author zhushiqing
  *
  */
 /*
- * 1. t_user±í£ºÒòÎªÎÒÃÇĞèÒª°Ñt_user±í²éÑ¯³öµÄÊı¾İ·â×°µ½User¶ÔÏóÖĞ
- * 2. ¸ÃÄ£¿éËùÓĞ±íµ¥£ºÒòÎªÎÒÃÇĞèÒª°Ñ±íµ¥Êı¾İ·â×°µ½User¶ÔÏóÖĞ
+ * 1. t_userè¡¨ï¼šå› ä¸ºæˆ‘ä»¬éœ€è¦æŠŠt_userè¡¨æŸ¥è¯¢å‡ºçš„æ•°æ®å°è£…åˆ°Userå¯¹è±¡ä¸­
+ * 2. è¯¥æ¨¡å—æ‰€æœ‰è¡¨å•ï¼šå› ä¸ºæˆ‘ä»¬éœ€è¦æŠŠè¡¨å•æ•°æ®å°è£…åˆ°Userå¯¹è±¡ä¸­
  */
 public class User {
-	private String uid;//Ö÷¼ü
-	private String loginname;//µÇÂ¼Ãû
-	private String loginpass;//µÇÂ¼ÃÜÂë
-	private String email;//ÓÊÏä
-	private boolean status;//×´Ì¬£¬true±íÊ¾ÒÑ¼¤»î£¬»òÕßÎ´¼¤»î
-	private String activationCode;//¼¤»îÂë£¬ËüÊÇÎ¨Ò»Öµ£¡¼´Ã¿¸öÓÃ»§µÄ¼¤»îÂëÊÇ²»Í¬µÄ£¡
+	private String uid;//ä¸»é”®
+	private String loginname;//ç™»å½•å
+	private String loginpass;//ç™»å½•å¯†ç 
+	private String email;//é‚®ç®±
+	private boolean status;//çŠ¶æ€ï¼Œtrueè¡¨ç¤ºå·²æ¿€æ´»ï¼Œæˆ–è€…æœªæ¿€æ´»
+	private String activationCode;//æ¿€æ´»ç ï¼Œå®ƒæ˜¯å”¯ä¸€å€¼ï¼å³æ¯ä¸ªç”¨æˆ·çš„æ¿€æ´»ç æ˜¯ä¸åŒçš„ï¼
 
-	//×¢²á±íµ¥ÊôĞÔ
-	private String reloginpass;//È·ÈÏÃÜÂë
-	private String verifyCode;//ÑéÖ¤Âë
+	//æ³¨å†Œè¡¨å•å±æ€§
+	private String reloginpass;//ç¡®è®¤å¯†ç 
+	private String verifyCode;//éªŒè¯ç 
 	
-	//ĞŞ¸ÄÃÜÂë±íµ¥
-	private String newpass;//ĞÂÃÜÂë
+	//ä¿®æ”¹å¯†ç è¡¨å•
+	private String newpass;//æ–°å¯†ç 
 	
 	
 	public String getReloginpass() {

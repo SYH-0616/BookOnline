@@ -4,23 +4,23 @@ import zju.zsq.BookOnline.category.domain.Category;
 
 public class Book {
 	
-	private String bid ; //Êéid
-	private String bname;//ÊéÃû
-	private String author;//×÷Õß
-	private double price;//¼Û¸ñ
-	private double currPrice;//ÏÖÔÚ¼Û¸ñ
-	private double discount;//ÕÛ¿Û
-	private String press;//
-	private String publishtime;//·¢ĞĞÊ±¼ä
-	private int edition;//³ö°æÉç
-	private int pageNum;//Ò³Êı
-	private int wordNum;//×ÖÊı
-	private String printtime;//Ó¡Ë¢Ê±¼ä
-	private int booksize;//¿ªÊı
-	private String paper;//Ö½ÖÊ
-	private Category category;//Ö÷Íâ¼ü¹ØÁª¶ÔÏó±¾Éí
-	private String image_w;//´óÍ¼url
-	private String image_b;//Ğ¡Í¼url
+	private String bid ; //ä¹¦çš„id
+	private String bname;//ä¹¦å
+	private String author;//ä½œè€…
+	private double price;//åŸä»·æ ¼
+	private double currPrice;//ä»·æ ¼
+	private double discount;//æŠ˜æ‰£
+	private String press;//å‡ºç‰ˆç¤¾
+	private String publishtime;//å‡ºç‰ˆæ—¶é—´
+	private int edition;//ç¼–è¾‘
+	private int pageNum;//é¡µæ•°
+	private int wordNum;//å­—æ•°
+	private String printtime;//å°åˆ·æ—¶é—´
+	private int booksize;//å¼€æœ¬
+	private String paper;//çº¸å¼ è´¨åœ°
+	private Category category;//ä¹¦çš„åˆ†ç±»ï¼Œå…¶å®å°±æ˜¯cid
+	private String image_w;//å¤§å›¾åœ°å€
+	private String image_b;//å°å›¾åœ°å€
 	public String getBid() {
 		return bid;
 	}
