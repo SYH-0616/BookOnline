@@ -36,9 +36,9 @@
   </head>
   
   <body>
-<form id="form1" action="<c:url value='/CartItemServlet'/>" method="post">
-	<input type="hidden" name="cartItemIds" value=""/>
-	<input type="hidden" name="method" value="loadCartItems"/>
+<form id="form1" action="<c:url value='/OrderServlet'/>" method="post">
+	<input type="hidden" name="cartItemIds" value="${cartItemIds }"/>
+	<input type="hidden" name="method" value="createOrders"/>
 <table width="95%" align="center" cellpadding="0" cellspacing="0">
 	<tr bgcolor="#efeae5">
 		<td width="400px" colspan="5"><span style="font-weight: 900;">生成订单</span></td>

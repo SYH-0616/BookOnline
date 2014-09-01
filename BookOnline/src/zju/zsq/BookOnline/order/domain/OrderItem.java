@@ -7,6 +7,13 @@ public class OrderItem {
 	private int quantity;
 	private double subtotal;//小计
 	private Book book;//所关联的book
+	private Order order;
+	public Order getOrder() {
+		return order;
+	}
+	public void setOrder(Order order) {
+		this.order = order;
+	}
 	public String getOrderItemId() {
 		return orderItemId;
 	}

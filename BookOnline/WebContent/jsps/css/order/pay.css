@@ -29,7 +29,7 @@ body {
 
 .spanPrice {
 	font-weight: 900;
-	font-family: 黑体;
+	font-family: 榛�浣�;
 	margin-left: 30px;
 }
 
@@ -54,7 +54,7 @@ img {
 }
 
 .linkNext {
-	background: url(/goods/images/icon2.png) no-repeat;
+	background: url(/BookOnline/images/icon2.png) no-repeat;
 	display: inline-block;
 	background-position: 0 -35px;
 	height: 40px;
@@ -66,11 +66,11 @@ img {
 	font-weight: 900;
 	color: #ffffff;
 	line-height: 40px;
-	font-family: 黑体;
+	font-family: 榛�浣�;
 }
 
 .linkNext:HOVER {
-	background: url(/goods/images/icon2.png) no-repeat;
+	background: url(/BookOnline/images/icon2.png) no-repeat;
 	display: inline-block;
 	background-position: 0 -75px;
 	height: 40px;

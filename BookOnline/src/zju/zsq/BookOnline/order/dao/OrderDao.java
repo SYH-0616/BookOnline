@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
@@ -21,6 +22,56 @@ import zju.zsq.jdbc.TxQueryRunner;
 
 public class OrderDao {
 	private QueryRunner qr = new TxQueryRunner();
+	
+	/**
+	 * 查询订单状态
+	 * @param oid
+	 * @return
+	 * @throws SQLException
+	 */
+	public int findStatus(String oid) throws SQLException{
+		String sql = "select status from t_order where oid = ?";
+		Number number = (Number)qr.query(sql, new ScalarHandler(),oid);
+		return number.intValue();
+	}
+	
+	public void updateStatus(String oid,int status) throws SQLException{
+		String sql = "update t_order set status=? where oid = ?";
+		qr.update(sql, status, oid);
+	}
+	
+	public Order load(String oid) throws SQLException{
+		String sql = "select * from t_order where oid = ?";
+		Order order = qr.query(sql, new BeanHandler<Order>(Order.class),oid);
+		loadOrderItem(order);
+		return order;
+		
+	}
+	
+	/**
+	 * 生成订单
+	 * @param order
+	 * @throws SQLException 
+	 */
+	public void add(Order order) throws SQLException{
+		//1.插入订单
+		String sql = "insert into t_order values(?,?,?,?,?,?)";
+		Object[] params = {order.getOid(),order.getOrdertime(),order.getTotal(),
+				order.getStatus(),order.getAddress(),order.getOwner().getUid()}; 
+		qr.update(sql, params);
+		//循环遍历订单的所有条目，让每个条目生成一位数组，执行批处理，插入订单条目
+		sql = "insert into t_orderItem values(?,?,?,?,?,?,?,?)";
+		int len = order.getOrderItemList().size();
+		Object[][] objs = new Object[len][];
+		for(int i=0; i<len;i++){
+			OrderItem item = order.getOrderItemList().get(i);
+			objs[i] = new Object[]{item.getOrderItemId(),item.getQuantity(),item.getSubtotal()
+					,item.getBook().getBid(),item.getBook().getBname(),item.getBook().getCurrPrice()
+					,item.getBook().getImage_b(),order.getOid()};
+		}
+		qr.batch(sql, objs);
+		
+	}
 	
 	//按照订单所属人查询
 	public PageBean<Order> findByUser(String uid, int pc) throws SQLException {
@@ -71,14 +122,15 @@ public class OrderDao {
 		/*
 		 * 4. 得到beanList，即当前页记录
 		 */
-		sql = "select * from t_book" + whereSql + " order by ordertime desc limit ?,?";
+		sql = "select * from t_order" + whereSql + " order by ordertime desc limit ?,?";
 		params.add((pc-1) * ps);//当前页首行记录的下标
 		params.add(ps);//一共查询几行，就是每页记录数
 		
 		List<Order> beanList = qr.query(sql, new BeanListHandler<Order>(Order.class), 
 				params.toArray());
-		//4.1为order加载条目
-		for(Order order:beanList){
+		// 虽然已经获取所有的订单，但每个订单中并没有订单条目。
+		// 遍历每个订单，为其加载它的所有订单条目
+		for(Order order : beanList) {
 			loadOrderItem(order);
 		}
 		/*

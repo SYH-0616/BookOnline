@@ -33,6 +33,14 @@
     <url-pattern>/BookServlet</url-pattern>
   </servlet-mapping>
   <servlet>
+    <servlet-name>OrderServlet</servlet-name>
+    <servlet-class>zju.zsq.BookOnline.order.servlet.OrderServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>OrderServlet</servlet-name>
+    <url-pattern>/OrderServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
     <servlet-name>VerifyCodeServlet</servlet-name>
     <servlet-class>zju.zsq.vcode.servlet.VerifyCodeServlet</servlet-class>
   </servlet>

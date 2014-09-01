@@ -5,7 +5,7 @@ body {
 }
 
 #linkPay {
-	background: url(/goods/images/bg_btns.png) no-repeat;
+	background: url(/BookOnline/images/bg_btns.png) no-repeat;
 	display: inline-block;
 	background-position: 0 -300px;
 	height: 20px;
@@ -14,12 +14,12 @@ body {
 	text-decoration: none;
 	color: #ffffff;
 	font-weight: 900;
-	font-family: 黑体;
+	font-family: 榛�浣�;
 	line-height: 20px;
 }
 
 #linkPay:HOVER {
-	background: url(/goods/images/bg_btns.png) no-repeat;
+	background: url(/BookOnline/images/bg_btns.png) no-repeat;
 	display: inline-block;
 	background-position: 0 -330px;
 	height: 20px;
