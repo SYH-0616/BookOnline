@@ -7,7 +7,7 @@ import zju.zsq.BookOnline.category.dao.CategoryDao;
 import zju.zsq.BookOnline.category.domain.Category;
 
 /**
- * ·ÖÀàÄ£¿éµÄÒµÎñ²ã
+ * 
  * @author zhushiqing
  *
  */
@@ -16,12 +16,55 @@ public class CategoryService {
 	private CategoryDao categoryDao = new CategoryDao();
 	
 	/**
-	 * ²éÑ¯ËùÓĞ·ÖÀà
+	 * åŠ è½½åˆ†ç±»
+	 * @param cid
+	 * @return
+	 */
+	public Category load(String cid){
+		try {
+			return categoryDao.load(cid);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public void edit(Category category){
+		try {
+			categoryDao.edit(category);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	/**
+	 * æŸ¥çœ‹æ‰€æœ‰åˆ†ç±»
 	 * @return
 	 */
 	public List<Category> findAll(){
 		try {
 			return categoryDao.findAll();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	/**
+	 * æ·»åŠ åˆ†ç±»
+	 * @param category
+	 */
+	public void add(Category category){
+		try {
+			categoryDao.add(category);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}		
+	}
+	/**
+	 * è·å–æ‰€æœ‰çˆ¶åˆ†ç±»ï¼Œä¸å¸¦å­åˆ†ç±»
+	 * @return
+	 */
+	public List<Category> findParents(){
+		try {
+			return categoryDao.findParents();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}

@@ -6,13 +6,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.handlers.MapHandler;
 import org.apache.commons.dbutils.handlers.MapListHandler;
 
 import zju.zsq.BookOnline.category.domain.Category;
 import zju.zsq.commons.CommonUtils;
 import zju.zsq.jdbc.TxQueryRunner;
 /**
- * ·ÖÀàÄ£¿é³Ö¾Ã²ã
+ *åˆ†ç±»Dao
  * @author zhushiqing
  *
  */
@@ -20,7 +21,7 @@ public class CategoryDao {
 	private QueryRunner qr = new TxQueryRunner();	 
 
 	/**
-	 * °ÑÒ»¸ömapÖĞµÄÊı¾İÓ³Éäµ½CategoryÖĞ
+	 * æŠŠmapè½¬æˆä¸€ä¸ªcategory
 	 * @param map
 	 * @return
 	 */
@@ -28,7 +29,7 @@ public class CategoryDao {
 		//cid,cname,pid,desc,orderBy
 		Category category = CommonUtils.toBean(map, Category.class);
 		String pid = (String) map.get("pid");
-		if(pid != null){//Èç¹û¸¸·ÖÀàID²»Îª¿Õ£¬ÎÒÃÇÊ¹ÓÃÒ»¸ö¸¸·ÖÀ´×°ÖÃpid
+		if(pid != null){//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½IDï¿½ï¿½Îªï¿½Õ£ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×°ï¿½ï¿½pid
 			Category parent = new Category();
 			parent.setCid(pid);
 			category.setParent(parent);
@@ -46,20 +47,17 @@ public class CategoryDao {
 	}
 	
 	/**
-	 * ·µ»ØËùÓĞÒ»¼¶·ÖÀà
+	 * æŸ¥æ‰¾æ‰€æœ‰åˆ†ç±»
 	 * @return
 	 * @throws SQLException 
 	 */
 	public List<Category> findAll() throws SQLException{
-		/**
-		 * 1.²éÑ¯³öËùÓĞÒ»¼¶·ÖÀà
-		 */
-		String sql = "select * from t_category where pid is null";
+		String sql = "select * from t_category where pid is null order by orderBy";
 		List<Map<String,Object>> mapList = qr.query(sql, new MapListHandler());
 		List<Category> parents = toCategoryList(mapList);
 		
 		for(Category  parent : parents){
-			//²éÕÒµ±Ç°¸¸·ÖÀàµÄËùÓĞ×Ó·ÖÀà
+			//
 			List<Category> children = findByParent(parent.getCid());
 			parent.setChildren(children);
 		}
@@ -67,12 +65,61 @@ public class CategoryDao {
 		return parents;
 	}
 	/**
-	 * Í¨¹ı¸»·ÖÀà²éÑ¯×Ó·ÖÀà
+	 * æ ¹æ®çˆ¶åˆ†ç±»æŸ¥æ‰¾
 	 * @throws SQLException 
 	 */
 	public List<Category> findByParent(String pid) throws SQLException{
-		String sql = "select * from t_category where pid = ?";
+		String sql = "select * from t_category where pid = ? order by orderBy";
 		List<Map<String,Object>> mapList = qr.query(sql, new MapListHandler(),pid);
 		return toCategoryList(mapList);
 	}
+	/**
+	 * 
+	 * @param category
+	 * @throws SQLException 
+	 */
+	public void add(Category category) throws SQLException{
+		String sql = "insert into t_category(cid,cname,pid,`desc`)values(?,?,?,?)";
+		//å› ä¸ºä¸€çº§åˆ†ç±»æ²¡æœ‰pidè€ŒäºŒçº§åˆ†ç±»æœ‰ï¼Œé¦–å…ˆå¾—åˆ¤æ–­
+		String pid = null;
+		if(category.getParent()!=null){
+			pid = category.getParent().getCid();
+		}
+		Object[] params = {category.getCid(),category.getCname(),pid,category.getDesc()};
+		qr.update(sql, params);
+	}
+	/**
+	 * è¿”å›æ‰€æœ‰çˆ¶åˆ†ç±»ä¸å¸¦å­åˆ†ç±»
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<Category> findParents() throws SQLException{
+		
+		String sql = "select * from t_category where pid is null order by orderBy";
+		List<Map<String,Object>> mapList = qr.query(sql, new MapListHandler()); 
+		
+		
+		return toCategoryList(mapList);
+	}
+	
+	public Category load(String cid) throws SQLException{
+		String sql = "select * from t_category where cid = ?";
+		return toCategory(qr.query(sql, new MapHandler(),cid));
+	}
+	/**
+	 * å³å¯ä¿®æ”¹ä¸€çº§åˆ†ç±»ä¹Ÿå¯ä»¥ä¿®æ”¹äºŒçº§åˆ†ç±»
+	 * @param category
+	 * @throws SQLException 
+	 */
+	public void edit(Category category) throws SQLException{
+		String sql = "update t_category set cname = ?,pid=?,`desc`=? where cid = ?";
+		String pid = null;
+		if(category.getParent()!=null){
+			pid = category.getParent().getCid();
+		}
+		Object[] params = {category.getCname(),pid,
+				category.getDesc(),category.getCid()};
+		qr.update(sql, params);
+	}
+	
 }
