@@ -37,16 +37,16 @@
     		<td width="200px;">
     		  <a href="<c:url value='/admin/AdminCategoryServlet?method=addChildPre&pid=${parent.cid }'/>">添加二级分类</a>
     		  <a href="<c:url value='/admin/AdminCategoryServlet?method=editParentPre&cid=${parent.cid }'/>">修改</a>
-    		  <a onclick="return confirm('您是否真要删除该一级分类？')" href="javascript:alert('删除一级分类成功！');">删除</a>
+    		  <a onclick="return confirm('您是否真要删除该一级分类？')" href="<c:url value='/admin/AdminCategoryServlet?method=deleteParent&cid=${parent.cid }'/>">删除</a>
     		</td>
     	</tr>
-   		<c:forEach items="${parent.children }" var="child">
+   		<c:forEach items="${parent.children }" var="child"> 
     	<tr class="trTwoLevel">
     		<td>${child.cname }</td>
     		<td>${child.desc }</td>
     		<td width="200px;" align="right">
     		  <a href="<c:url value='/admin/AdminCategoryServlet?method=editChildPre&cid=${child.cid }'/>">修改</a>
-    		  <a onclick="return confirm('您是否真要删除该二级分类？')" href="javascript:alert('删除二级分类成功！');">删除</a>
+    		  <a onclick="return confirm('您是否真要删除该二级分类？')" href="<c:url value='/admin/AdminCategoryServlet?method=deleteChild&cid=${child.cid }'/>">删除</a>
     		</td>
     	</tr>
     	</c:forEach>

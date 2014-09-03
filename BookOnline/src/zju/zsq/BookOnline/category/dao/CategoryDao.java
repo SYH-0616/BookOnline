@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.MapHandler;
 import org.apache.commons.dbutils.handlers.MapListHandler;
+import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import zju.zsq.BookOnline.category.domain.Category;
 import zju.zsq.commons.CommonUtils;
@@ -29,7 +30,7 @@ public class CategoryDao {
 		//cid,cname,pid,desc,orderBy
 		Category category = CommonUtils.toBean(map, Category.class);
 		String pid = (String) map.get("pid");
-		if(pid != null){//������ID��Ϊ�գ�����ʹ��һ��������װ��pid
+		if(pid != null){
 			Category parent = new Category();
 			parent.setCid(pid);
 			category.setParent(parent);
@@ -65,7 +66,7 @@ public class CategoryDao {
 		return parents;
 	}
 	/**
-	 * 根据父分类查找
+	 * 根据父分类查找所有子分类
 	 * @throws SQLException 
 	 */
 	public List<Category> findByParent(String pid) throws SQLException{
@@ -121,5 +122,24 @@ public class CategoryDao {
 				category.getDesc(),category.getCid()};
 		qr.update(sql, params);
 	}
-	
+	/**
+	 * 查询指定父分类下子分类的个数
+	 * @param pid
+	 * @return
+	 * @throws SQLException 
+	 */
+	public int findChildrenCountByParents(String pid) throws SQLException{
+		String sql = "select count(*) from t_category where pid = ?";
+		Number number = (Number) qr.query(sql, new ScalarHandler(),pid);
+		return number==null?0:number.intValue();
+	}
+	/**
+	 * 删除分类
+	 * @param cid
+	 * @throws SQLException
+	 */
+	public void delete(String cid) throws SQLException{
+		String sql = "delete from t_category where cid = ?";
+		qr.update(sql, cid);
+	}
 }

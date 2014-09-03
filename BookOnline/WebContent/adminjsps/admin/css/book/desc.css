@@ -68,25 +68,25 @@ a:hover {
 	padding-top: 1px;
 	padding-left: 32px;
 	color: #fff;
-	font-family: 黑体;
+	font-family: 榛�浣�;
 }
 
 .editBtn1 {
-	background: url(/goods/images/huang_2_btn.jpg) left top
+	background: url(/BookOnline/images/huang_2_btn.jpg) left top
 		no-repeat;
 }
 
 .editBtn2 {
-	background: url(/goods/images/huang_1_btn.jpg) left top
+	background: url(/BookOnline/images/huang_1_btn.jpg) left top
 		no-repeat;
 }
 
 .delBtn1 {
-	background: url(/goods/images/hong_2_btn.jpg) left top
+	background: url(/BookOnline/images/hong_2_btn.jpg) left top
 		no-repeat;
 }
 
 .delBtn2 {
-	background: url(/goods/images/hong_1_btn.jpg) left top
+	background: url(/BookOnline/images/hong_1_btn.jpg) left top
 		no-repeat;
 }

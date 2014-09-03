@@ -62,6 +62,29 @@ $(function () {
 		$("#form").submit();
 	});
 });
+function loadChildren(){
+	//1.获取pid
+	var pid = $("#pid").val();
+	$.ajax({
+		async:true,
+		cache:false,
+		url:"/BookOnline/admin/AdminBookServlet",
+		data:{method:"ajaxFindChildren", pid:pid},
+		type:"POST",
+		dataType:"json",
+		success:function(arr) {
+			// 3. 得到cid，删除它的内容
+			$("#cid").empty();//删除元素的子元素
+			$("#cid").append($("<option>====请选择2级分类====</option>"));//4.添加头
+			// 5. 循环遍历数组，把每个对象转换成<option>添加到cid中
+			for(var i = 0; i < arr.length; i++) {
+				var option = $("<option>").val(arr[i].cid).text(arr[i].cname);
+				$("#cid").append(option);
+			}
+		}
+	});
+	
+}
 
 </script>
   </head>
@@ -69,14 +92,14 @@ $(function () {
   <body>
   <div>
    <p style="font-weight: 900; color: red;">${msg }</p>
-   <form action="javascript:alert('添加图书成功！')" enctype="multipart/form-data" method="post" id="form">
+   <form action="<c:url value='/admin/AdminAddBookServlet'/>" enctype="multipart/form-data" method="post" id="form">
     <div>
 	    <ul>
 	    	<li>书名：　<input id="bname" type="text" name="bname" value="Spring实战(第3版)（In Action系列中最畅销的Spring图书，近十万读者学习Spring的共同选择）" style="width:500px;"/></li>
 	    	<li>大图：　<input id="image_w" type="file" name="image_w"/></li>
 	    	<li>小图：　<input id="image_b" type="file" name="image_b"/></li>
 	    	<li>当前价：<input id="price" type="text" name="price" value="40.7" style="width:50px;"/></li>
-	    	<li>定价：　<input id="currPrice" type="text" name="disprice" value="59.0" style="width:50px;"/>
+	    	<li>定价：　<input id="currPrice" type="text" name="currPrice" value="59.0" style="width:50px;"/>
 	    	折扣：<input id="discount" type="text" name="discount" value="6.9" style="width:30px;"/>折</li>
 	    </ul>
 		<hr style="margin-left: 50px; height: 1px; color: #dcdcdc"/>
@@ -107,19 +130,17 @@ $(function () {
 			<tr>
 				<td>
 					一级分类：<select name="pid" id="pid" onchange="loadChildren()">
-						<option value="">==请选择1级分类==</option>
-			    		<option value="1" selected='selected'>程序设计</option>
-			    		<option value="2">办公室用书</option>
-			    		<option value="3">图形 图像 多媒体</option>
-			    		<option value="4">操作系统/系统开发</option>
+						<option value="">====请选择1级分类====</option>
+						<c:forEach	items="${parents }" var="parent">
+						<option value="${parent.cid }">${parent.cname }</option>
+						</c:forEach>
+			    		
 					</select>
 				</td>
 				<td>
 					二级分类：<select name="cid" id="cid">
-						<option value="">==请选择2级分类==</option>
-			    		<option value="1" selected='selected'>Java Javascript</option>
-			    		<option value="2">JSP</option>
-			    		<option value="3">C C++ VC VC++</option>
+						<option value="">====请选择2级分类====</option>
+			    	
 					</select>
 				</td>
 				<td></td>

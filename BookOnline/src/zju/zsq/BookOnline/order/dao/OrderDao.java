@@ -80,6 +80,18 @@ public class OrderDao {
 		return findByCriteria(exprList, pc);
 	}
 	
+	public PageBean<Order> findByStatus(int status, int pc) throws SQLException {
+		List<Expression> exprList = new ArrayList<Expression>();
+		exprList.add(new Expression("status", "=", status+""));
+		return findByCriteria(exprList, pc);
+	}
+	
+	
+	public PageBean<Order> findAll(int pc) throws SQLException {
+		List<Expression> exprList = new ArrayList<Expression>();
+		return findByCriteria(exprList, pc);
+	}
+	
 	private PageBean<Order> findByCriteria(List<Expression> exprList, int pc) throws SQLException {
 		/*
 		 * 1. 得到ps

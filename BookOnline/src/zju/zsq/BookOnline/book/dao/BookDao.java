@@ -29,7 +29,7 @@ private QueryRunner qr = new TxQueryRunner();
 	 * @throws SQLException
 	 */
 	public Book findByBid(String bid) throws SQLException {
-		String sql = "select * from t_book where bid=?";
+		String sql = "SELECT * FROM t_book b, t_category c WHERE b.cid=c.cid AND b.bid=?";
 		// 一行记录中，包含了很多的book的属性，还有一个cid属性
 		Map<String,Object> map = qr.query(sql, new MapHandler(), bid);
 		// 把Map中除了cid以外的其他属性映射到Book对象中
@@ -38,6 +38,12 @@ private QueryRunner qr = new TxQueryRunner();
 		Category category = CommonUtils.toBean(map, Category.class);
 		// 两者建立关系
 		book.setCategory(category);
+		//获取pid
+		if(map.get("pid") != null) {
+			Category parent = new Category();
+			parent.setCid((String)map.get("pid"));
+			category.setParent(parent);
+		}
 		return book;
 	}
 	
@@ -179,16 +185,42 @@ private QueryRunner qr = new TxQueryRunner();
 		return pb;
 	}
 	
-	public static void main(String[] args) throws SQLException {
-		BookDao bookDao = new BookDao();
-		List<Expression> exprList = new ArrayList<Expression>();
-		exprList.add(new Expression("cid", "=", "5F79D0D246AD4216AC04E9C5FAB3199E"));
-	
+	public int findBookCountCategory(String cid) throws SQLException{
+		String sql = "select count(*) from t_book where cid = ?";
+		Number number = (Number) qr.query(sql, new ScalarHandler(),cid);
+		return number==null?0:number.intValue(); 
+	}
+
+	public void add(Book book) throws SQLException {
+		String sql = "insert into t_book (bid,bname,author,price,currPrice,discount,"
+				+ "press,publishtime,edition,pageNum,wordNum,printtime,booksize,paper,cid,image_w,"
+				+ "image_b) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		Object[] params = {book.getBid(),book.getBname(),book.getAuthor(),book.getPrice(),book.getCurrPrice(),
+				book.getDiscount(),book.getPress(),book.getPublishtime(),book.getEdition(),
+				book.getPageNum(),book.getWordNum(),book.getPrinttime(),book.getBooksize(),
+				book.getPaper(),book.getCategory().getCid(),book.getImage_w(),book.getImage_b()};
+		qr.update(sql, params);
 		
-		PageBean<Book> books = bookDao.findByCriteria(exprList, 1);
-		List<Book> list = books.getBeanList();
-		for(Book book : list){
-			System.out.println("书名："+book.getBname()+"  作者:"+book.getAuthor());
-		}
+	}
+
+	/**
+	 * 编辑图书
+	 * @param book
+	 * @throws SQLException
+	 */
+	public void edit(Book book) throws SQLException{
+		String sql = "update  t_book bname=?,author=?,price=?,currPrice=?,discount=?,"
+				+ "press=?,publishtime=?,edition=?,pageNum=?,wordNum=?,printtime=?,booksize=?,paper=?"
+				+ ",cid=? where bid=?";
+		Object[] params = {book.getBname(),book.getAuthor(),book.getPrice(),book.getCurrPrice(),
+				book.getDiscount(),book.getPress(),book.getPublishtime(),book.getEdition(),
+				book.getPageNum(),book.getWordNum(),book.getPrinttime(),book.getBooksize(),
+				book.getPaper(),book.getCategory().getCid(),book.getBid()};
+		qr.update(sql, params);
+	}
+	
+	public void delete(String bid) throws SQLException{
+		String sql = "delete from t_book from where bid = ?";
+		qr.update(sql, bid);
 	}
 }

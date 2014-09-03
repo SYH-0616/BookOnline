@@ -16,13 +16,14 @@
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
 	<link rel="stylesheet" type="text/css" href="<c:url value='/adminjsps/admin/css/book/main.css'/>">
+	
   </head>
   
   <body>
 <table class="table" align="center" width="100%" height="100%" border="0">
 	<tr style="height: 120px; ">
 		<td align="center" width="200px;">
-			<iframe frameborder="0" src="<c:url value='/adminjsps/admin/book/left.jsp'/>" name="left"></iframe>
+			<iframe frameborder="0" src="<c:url value='/admin/AdminBookServlet?method=findCategory'/>" name="left"></iframe>
 		</td>
 		<td>
 			<iframe frameborder="0" src="<c:url value='/adminjsps/admin/book/body.jsp'/>" name="body"></iframe>

@@ -64,4 +64,38 @@ public class BookService {
 			throw new RuntimeException(e);
 		}
 	}
+	/**
+	 * 返回当前分类下图书的个数
+	 * @param cid
+	 * @return
+	 */
+	public int findBookCountByCategory(String cid){
+		try {
+			return bookDao.findBookCountCategory(cid);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public void add(Book book){
+		try{
+			bookDao.add(book);
+		}catch(SQLException e){
+			throw new RuntimeException(e);
+		}
+	}
+	public void edit(Book book){
+		try{
+			bookDao.edit(book);
+		}catch(SQLException e){
+			throw new RuntimeException(e);
+		}
+	}
+	public void delete(String bid){
+		try{
+			bookDao.delete(bid);
+		}catch(SQLException e){
+			throw new RuntimeException(e);
+		}
+	}
 }

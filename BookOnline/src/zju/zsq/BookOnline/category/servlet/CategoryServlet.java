@@ -11,7 +11,6 @@ import zju.zsq.BookOnline.category.domain.Category;
 import zju.zsq.BookOnline.category.service.CategoryService;
 import zju.zsq.servlet.BaseServlet;
 /**
- * 用户分类web层
  * @author zhushiqing
  *
  */
@@ -21,7 +20,7 @@ public class CategoryServlet extends BaseServlet{
 	private CategoryService categoryService = new CategoryService();
 	
 	/**
-	 * 查询所有分类
+	 * 鏌ヨ鎵�鏈夌殑鍒嗙被
 	 * @param req
 	 * @param resp
 	 * @return

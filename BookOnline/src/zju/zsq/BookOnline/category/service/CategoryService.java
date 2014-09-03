@@ -69,4 +69,39 @@ public class CategoryService {
 			throw new RuntimeException(e);
 		}
 	}
+	/**
+	 * 查询指定分类的子分类的个数
+	 * @param pid
+	 * @return
+	 */
+	public int findChildrenCountByParent(String pid){
+		try {
+			return categoryDao.findChildrenCountByParents(pid);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	/**
+	 * 删除
+	 * @param cid
+	 */
+	public void delete(String cid){
+		try {
+			categoryDao.delete(cid);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	/**
+	 * 查询指定父分类下的子分类
+	 * @param pid
+	 * @return
+	 */
+	public List<Category> findByParent(String pid){
+		try {
+			return categoryDao.findByParent(pid);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
 }

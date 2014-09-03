@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import zju.zsq.BookOnline.book.service.BookService;
 import zju.zsq.BookOnline.category.domain.Category;
 import zju.zsq.BookOnline.category.service.CategoryService;
 import zju.zsq.commons.CommonUtils;
@@ -19,7 +20,7 @@ public class AdminCategoryServlet extends BaseServlet {
 	private static final long serialVersionUID = 1L;
        
 	private CategoryService adminCategoryService = new CategoryService();
-    
+    private BookService bookService = new BookService();
 
 	public String findAll(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setAttribute("parents", adminCategoryService.findAll());
@@ -122,6 +123,38 @@ public class AdminCategoryServlet extends BaseServlet {
 		
 		adminCategoryService.edit(child);
 		return findAll(request, response);
-		
+	}
+	/**
+	 * 删除一级分类
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	public String deleteParent(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
+		String cid = request.getParameter("cid");
+		int count = adminCategoryService.findChildrenCountByParent(cid);
+		if(count > 0){
+			request.setAttribute("msg", "该分类下还有子分类，不能删除!");
+			return "f:/adminjsps/msg.jsp";
+		}else{
+			adminCategoryService.delete(cid);
+			return findAll(request, response);
+		}
+	}
+	
+	public String deleteChild(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
+		String cid = request.getParameter("cid");
+		int count = bookService.findBookCountByCategory(cid);
+		if(count > 0){
+			request.setAttribute("msg", "该分类下还存在图书不能删除！");
+			return "f:/adminjsps/msg.jsp";
+		}else{
+			adminCategoryService.delete(cid);
+			return findAll(request, response);
+		}
 	}
 }
