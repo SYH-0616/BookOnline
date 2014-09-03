@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<!-- 请把mysql用户名替换成自己的用户以及密码以及自己的数据库，我这里是books-->
 <c3p0-config>
 	<default-config> 
 		<property name="jdbcUrl">
@@ -8,7 +9,7 @@
 		</property>
 		<property name="driverClass">com.mysql.jdbc.Driver</property>
 		<property name="user">root</property>
-		<property name="password">zsq66zsq</property>
+		<property name="password">你的密码</property>
 		
 		<property name="acquireIncrement">3</property>
 		<property name="initialPoolSize">10</property>
